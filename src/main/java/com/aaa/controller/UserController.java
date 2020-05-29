@@ -1,7 +1,9 @@
 package com.aaa.controller;
 
+import com.aaa.biz.MenuBiz;
 import com.aaa.biz.UserBiz;
 import com.aaa.entity.LayUITable;
+import com.aaa.entity.LayUiTree;
 import com.aaa.entity.MyUserInfo;
 import com.aaa.shiro.ShiroUtil;
 import com.alibaba.fastjson.JSON;
@@ -29,6 +31,8 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserBiz userBizImpl;
+    @Autowired
+    private MenuBiz menuBiz;
 
     @RequestMapping("/toShowUserLayui")
     public String toShowUserLayui(){
@@ -93,6 +97,9 @@ public class UserController {
             return "login";
         }
         model.addAttribute("login_name",login_name);
+        List<LayUiTree> menus = menuBiz.selectAllMenuByName(login_name);
+        System.out.println(menus);
+        model.addAttribute("menus",menus);
         return "user/index";
     }
     //保存用户

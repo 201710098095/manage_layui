@@ -61,12 +61,19 @@ public class UserController {
         layUITable.setData(pageInfo.getList());
         return layUITable;
     }
+    /**
+     * 注销
+     * @return
+     */
+    @RequestMapping("/logout")
+    public String logout(){
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        return "login";
+    }
     //登录路径
     @RequestMapping("/toLogin")
     public String toLogin(){
-        //退出登录
-        Subject subject = SecurityUtils.getSubject();
-        subject.logout();
         return "login";
     }
     //登录

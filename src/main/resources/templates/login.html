@@ -1,0 +1,72 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script th:src="@{/js/jquery-1.10.2.js}"></script>
+    <script th:src="@{/layui/layui.all.js}"></script>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" type="text/css">
+</head>
+<body>
+<div class="container">
+<div class="login">
+    <form class="layui-form" action="login">
+        <div class="title">登录</div>
+        <div th:text="${message}" style="color: red;margin-left: 120px;margin-bottom: 10px"></div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名：</label>
+            <div class="layui-input-block">
+                <input type="text" name="login_name" required  lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input i">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码：</label>
+            <div class="layui-input-inline">
+                <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input i">
+            </div>
+        </div>
+        <div class="button">
+        <button class="layui-btn" lay-submit lay-filter="login">登入</button>
+        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </form>
+</div>
+</div>
+</body>
+<style>
+    body{
+        background-color: #2b4b6b;
+
+    }
+    .button{
+       float: right;
+        margin-top: 20px;
+
+    }
+    .login{
+        width: 450px;
+        height: 300px;
+        background-color: #fff;
+        border-radius: 8px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin: -150px 0 0 -225px;
+        padding-right: 50px;
+        padding-top: 10px;
+    }
+    .title{
+        font-size: 30px;
+        color: gray;
+        font-weight:bold;
+        margin: 20px;
+        margin-left: 220px;
+    }
+    .i{
+        width: 335px;
+    }
+
+</style>
+
+</html>

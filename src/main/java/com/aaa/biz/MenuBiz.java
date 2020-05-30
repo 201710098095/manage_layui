@@ -1,5 +1,6 @@
 package com.aaa.biz;
 
+import com.aaa.entity.LayUITable;
 import com.aaa.entity.LayUiTree;
 import com.aaa.entity.Menu;
 
@@ -18,6 +19,8 @@ public interface MenuBiz {
     int updateByPrimaryKey(Menu record);
 
     List<LayUiTree>  selectAllMenu();
+    List<Menu>  selectAllMenu2();
+
     //根据用户登录名查询对应的所有菜单
     List<LayUiTree>  selectAllMenuByName(String loginName);
 }

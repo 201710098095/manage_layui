@@ -1,5 +1,6 @@
 package com.aaa.dao;
 
+import com.aaa.entity.LayUITable;
 import com.aaa.entity.Menu;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -23,4 +24,6 @@ public interface MenuMapper {
 
     List<Menu> selectAllMenu();
     List<Menu>  selectAllMenuByName(String loginName);
+
+    List<Menu> selectAllMenu2();
 }

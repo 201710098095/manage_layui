@@ -45,13 +45,14 @@ public class MyRealm extends AuthorizingRealm {
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) token;
         //验证用户名
         MyUserInfo myUserInfo = userBizImpl.selectUserByUsername(usernamePasswordToken.getUsername());
+        System.out.println(myUserInfo);
+
         if(myUserInfo==null){
             return null;
         }
 ////第二个参数是密码，数据库中的密码
         String sqlpassword=myUserInfo.getPassword();
         SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(myUserInfo,sqlpassword,getName());
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>"+simpleAuthenticationInfo);
         return simpleAuthenticationInfo;
     }
     public static void main(String[] args){

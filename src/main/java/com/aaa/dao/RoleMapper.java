@@ -1,7 +1,13 @@
 package com.aaa.dao;
 
 import com.aaa.entity.Role;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Mapper
+@Repository
 public interface RoleMapper {
     int deleteByPrimaryKey(Integer roleId);
 
@@ -14,4 +20,5 @@ public interface RoleMapper {
     int updateByPrimaryKeySelective(Role record);
 
     int updateByPrimaryKey(Role record);
+    List<Role> selectAllRole();
 }

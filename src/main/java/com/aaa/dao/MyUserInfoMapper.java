@@ -18,7 +18,6 @@ public interface MyUserInfoMapper {
 
     MyUserInfo selectByPrimaryKey(Integer userid);
 
-    List<MyUserInfo> selectAllUser();
 
     int updateByPrimaryKeySelective(MyUserInfo record);
 
@@ -27,5 +26,7 @@ public interface MyUserInfoMapper {
     int delUserByID( @Param("ids") List<String> ids);
 
     MyUserInfo selectUserByUsername(String username);
+    List<MyUserInfo> selectAllUser();
+
 
 }

@@ -2,6 +2,7 @@ package com.aaa.biz.impl;
 
 import com.aaa.biz.MenuBiz;
 import com.aaa.dao.MenuMapper;
+import com.aaa.entity.LayUITable;
 import com.aaa.entity.LayUiTree;
 import com.aaa.entity.Menu;
 import com.aaa.util.TreeUtils;
@@ -21,7 +22,7 @@ public class MenuBizImpl implements MenuBiz {
     private MenuMapper menuMapper;
     @Override
     public int deleteByPrimaryKey(Integer menuId) {
-        return 0;
+        return menuMapper.deleteByPrimaryKey(menuId);
     }
 
     @Override
@@ -31,7 +32,7 @@ public class MenuBizImpl implements MenuBiz {
 
     @Override
     public int insertSelective(Menu record) {
-        return 0;
+        return menuMapper.insertSelective(record);
     }
 
     @Override
@@ -41,7 +42,7 @@ public class MenuBizImpl implements MenuBiz {
 
     @Override
     public int updateByPrimaryKeySelective(Menu record) {
-        return 0;
+        return menuMapper.updateByPrimaryKeySelective(record);
     }
 
     @Override
@@ -59,6 +60,14 @@ public class MenuBizImpl implements MenuBiz {
         List<Menu> menus = menuMapper.selectAllMenu();
         //并组装成tree格式的
         return TreeUtils.getChildPerms(menus, 0);
+    }
+    @Override
+    public List<Menu> selectAllMenu2() {
+        //查询所有的菜单
+        List<Menu> menus = menuMapper.selectAllMenu();
+        //并组装成tree格式的
+        System.out.println("++++++++++++++"+menus);
+        return menus;
     }
 
     @Override

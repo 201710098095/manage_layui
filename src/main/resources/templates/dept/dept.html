@@ -1,0 +1,430 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script th:src="@{/js/jquery-1.10.2.js}"></script>
+    <script th:src="@{/layui/layui.all.js}"></script>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <style>
+        .demo-side {
+            position: relative;
+            transition: all .3s;
+        }
+
+        .demo-side.show {
+            padding-left: 120px;
+            position: relative;
+        }
+
+        .demo-side:before {
+            content: "假设这是侧边栏, treeTable使用了与layui数据表格完全不同的列宽分配方式, 由浏览器来分配, 所以当容器宽度变化后会自动适应, 对单页面系统非常友好";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            margin-top: -90px;
+            width: 105px;
+            visibility: hidden;
+            line-height: 1.5;
+        }
+
+        .demo-side.show:before {
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+<div class="page-wrapper">
+
+
+    <div class="layui-btn-container" style="display: inline-block;">
+        <button id="btnExpandAll" class="layui-btn layui-btn-sm layui-btn-primary">
+            <i class="layui-icon">&#xe668;</i>展开全部
+        </button>
+        <button id="btnFoldAll" class="layui-btn layui-btn-sm layui-btn-primary">
+            <i class="layui-icon">&#xe66b;</i>折叠全部
+        </button>
+    </div>
+    <input class="layui-input" id="edtSearch" placeholder="输入关键字"
+           style="display: inline-block;width: 140px;height: 30px;line-height: 30px;padding: 0 5px;margin-right: 5px;"/>
+    <div class="layui-btn-container" style="display: inline-block;">
+        <button id="btnSearch" class="layui-btn layui-btn-normal layui-btn-radius">
+            <i class="layui-icon">&#xe615;</i>搜索
+        </button>
+        <button id="btnClearSearch" class="layui-btn layui-btn-warm layui-btn-radius">
+            <i class="layui-icon">&#x1006;</i>清除搜索
+        </button>
+    </div>
+    <div class="demo-side">
+        <table id="demoTreeTb"></table>
+    </div>
+</div>
+<!--添加对话框-->
+<form class="layui-form" action="" id="deptInsertForm" style="display: none">
+    <input type="hidden" name="delFlag" id="IdelFlag">
+    <div class="layui-form-item">
+        <label class="layui-form-label">所属部门编号</label>
+        <div class="layui-input-block">
+            <input type="text" name="parentId" id="IparentId" lay-verify="required" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">部门名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="deptName" autocomplete="off" placeholder="请输入部门名称" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">部门编号</label>
+        <div class="layui-input-block">
+            <input type="text" name="deptId" autocomplete="off" placeholder="请输入菜单名称" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">排列顺序</label>
+        <div class="layui-input-block">
+            <input type="text" name="orderNum" autocomplete="off" placeholder="请输入菜单名称" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">状态</label>
+        <div class="layui-input-block">
+            <input type="text" name="status" id="Istatus" autocomplete="off" placeholder="请输入菜单名称" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="insertDeptForm">提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+<!--修改对话框-->
+<form class="layui-form" action="" id="deptEditForm" style="display: none">
+    <input type="hidden" id="dept_id" name="deptId">
+    <input type="hidden" id="icon" name="icon">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">所属部门编号</label>
+        <div class="layui-input-block">
+            <input type="text" name="parentId" id="parentId" lay-verify="required" autocomplete="off"
+                  class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">部门名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="deptName" autocomplete="off" placeholder="请输入部门名称" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">排列顺序</label>
+        <div class="layui-input-block">
+            <input type="text" name="orderNum" autocomplete="off" placeholder="请输入菜单名称" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">状态</label>
+        <div class="layui-input-block">
+            <input type="text" name="status" id="status" autocomplete="off" placeholder="请输入菜单名称" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="editDeptForm">提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+
+<!-- 表格操作列 -->
+<script type="text/html" id="tbBar">
+    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="insert">增加</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+
+</script>
+
+<script>
+    Date.prototype.Format = function (fmt) {
+        var o = {
+            "M+": this.getMonth() + 1, //月份
+            "d+": this.getDate(), //日
+            "H+": this.getHours(), //小时
+            "m+": this.getMinutes(), //分
+            "s+": this.getSeconds(), //秒
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+            "S": this.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
+    var form=layui.form;
+    form.render();//渲染表单
+    layui.config({
+        base: '/layui/lay/modules/'      //自定义layui组件的目录
+    }).extend({ //设定组件别名
+        treeTable:   'treeTable',
+    });
+    layui.use(['layer', 'util', 'treeTable'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var util = layui.util;
+        var treeTable = layui.treeTable;
+        $('body').removeClass('layui-hide');
+
+        // 渲染表格
+
+        var insTb = treeTable.render({
+            elem: '#demoTreeTb',
+            url: '/dept/showAllDept',
+            toolbar: 'default',
+            height: 'full-100',
+            tree: {
+                iconIndex: 2,
+                isPidData: true,
+                idName: 'deptId',
+                pidName: 'parentId'
+            },
+            defaultToolbar: ['filter',  {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+            cols: [
+                [
+                    {type: 'numbers'},
+                    {type: 'checkbox'},
+                    {field: 'deptName', title: '名称'},
+                    {field: 'deptId', title: '部门编号'},
+                    {field: 'delFlag',title:'创建时间'},
+                    {title: '类型', templet: '<p>{{d.menuType=="F" ?"按钮":"菜单"}}</p>', align: 'center', width: 60},
+                    {align: 'center', toolbar: '#tbBar', title: '操作', width: 200}
+                ]
+            ],
+            style: 'margin-top:0;'
+        });
+
+        treeTable.on('tool(demoTreeTb)', function (obj) {
+            var event = obj.event;
+            if (event === 'del') {
+                console.log(obj.data.deptId);
+                console.log(obj.data.parentId);
+                obj.del();
+                $.ajax({
+                    url: '/dept/delDept',
+                    type: 'POST',
+                    dataType: 'json',//数据类型
+                    data: {deptId: obj.data.deptId},
+                    //请求成功
+                    success: function (result) {
+                        if (result.code == 0) {
+                            //关闭弹出层
+                            layer.closeAll();
+                            //重新加载数据表格
+                            insTb.reload();
+                        } else {
+                            //关闭弹出层
+                            layer.closeAll();
+                        }
+                    }
+                });
+            } else if (event === 'edit') {
+                var a = obj.data.parentId;
+                var deptId = obj.data.deptId;
+                 $("#parentId").val(a);
+                $("#status").val("Y");
+                $("#dept_id").val(deptId);
+                console.log(a);
+                layer.open(
+                    {
+                        type: 1,
+                        content: $("#deptEditForm"),
+                        icon: 1,
+                        title: "修改部门",
+                        area: ['450px', '400px']
+                    }
+                )
+            }
+            else if (event === 'insert') {
+                var a = obj.data.parentId;
+                var myDate = new Date().Format("yyyy-MM-dd");
+
+                console.log(myDate);
+
+                $("#IparentId").val(a);
+                $("#Istatus").val("Y");
+                $("#IdelFlag").val(myDate);
+
+
+                layer.open(
+                    {
+                        type: 1,
+                        content: $("#deptInsertForm"),
+                        icon: 1,
+                        title: "增加部门",
+                        area: ['450px', '400px']
+                    }
+                )
+            }
+        });
+        //提交修改表单
+        form.on('submit(editDeptForm)', function (data) {
+            //数据的提交，ajax方式
+            $.ajax({
+                url: '/dept/updateDept',//地址
+                type: 'POST',//类型
+                dataType: 'json',//数据类型
+                data: data.field,
+                //请求成功
+                success: function (result) {
+                    if (result.code == 0) {
+                        //关闭弹出层
+                        layer.closeAll();
+                        //重新加载数据表格
+                        insTb.reload();
+                    } else {
+                        //关闭弹出层
+                        layer.closeAll();
+                    }
+                }
+            });
+            return false;
+        });
+        form.on('submit(insertDeptForm)', function(data){
+            //数据的提交，ajax方式
+
+            console.log("11")
+            $.ajax({
+                url: '/dept/insertDept',//地址
+                dataType: 'json',//数据类型
+                type: 'POST',//类型
+                data:data.field,
+                //请求成功
+                success: function (result) {
+                    if(result.code==0){
+                        //关闭弹出层
+                        layer.closeAll();
+                        //重新加载数据表格
+                        insTb.reload();
+                        console.log("11111111")
+                    }else
+                    {
+                        //关闭弹出层
+                        layer.closeAll();
+                    }
+                    console.log("113333")
+                }
+            });
+            return false;
+        });
+        //监听指定开关
+        form.on('switch(switchTest)', function(data){
+            layer.msg('开关checked：'+ (this.checked ? '1' : '0'), {
+                offset: '6px'
+            });
+        });
+        //提交添加表单
+
+
+        // 头部工具栏点击事件
+        treeTable.on('toolbar(demoTreeTb)', function (obj) {
+            switch (obj.event) {
+                case 'add':
+                    layer.msg('添加菜单');
+                    layer.open(
+                        {
+                            type: 1,
+                            content: $("#deptInsertForm"),
+                            icon: 1,
+                            title:"添加菜单",
+                            area: ['450px', '400px']
+                        }
+                    )
+                    break;
+                case 'delete':
+                    layer.msg('删除');
+                    break;
+                case 'update':
+                    layer.msg('编辑');
+                    break;
+                case 'LAYTABLE_TIPS':
+                    layer.msg('提示');
+                    break;
+            }
+        });
+
+        // 全部展开
+        $('#btnExpandAll').click(function () {
+            insTb.expandAll();
+        });
+
+        // 全部折叠
+        $('#btnFoldAll').click(function () {
+            insTb.foldAll();
+        });
+
+        // 展开指定
+        $('#btnExpand').click(function () {
+            insTb.expand(2);
+        });
+
+        // 折叠指定
+        $('#btnFold').click(function () {
+            insTb.fold(2);
+        });
+
+        // 设置选中
+        $('#btnChecked').click(function () {
+            insTb.expand(4);
+            insTb.setChecked([4]);
+        });
+
+        // 搜索
+        $('#btnSearch').click(function () {
+            var keywords = $('#edtSearch').val();
+            if (keywords) {
+                insTb.filterData(keywords);
+            } else {
+                insTb.clearFilter();
+            }
+        });
+
+        // 清除搜索
+        $('#btnClearSearch').click(function () {
+            insTb.clearFilter();
+        });
+
+        // 重载
+        $('#btnReload').click(function () {
+            insTb.reload();
+        });
+        $('#btnRefresh').click(function () {
+            insTb.refresh();
+        });
+
+        // 获取选中
+        $('#btnGetChecked').click(function () {
+            layer.alert('<pre>' + JSON.stringify(insTb.checkStatus().map(function (d) {
+                return {
+                    authorityName: d.authorityName,
+                    authorityId: d.authorityId,
+                    LAY_INDETERMINATE: d.LAY_INDETERMINATE
+                };
+            }), null, 3) + '</pre>');
+        });
+
+        // 演示侧边栏
+        $('#btnToggleSide').click(function () {
+            $('.demo-side').toggleClass('show');
+        });
+
+    });
+</script>
+</body>
+</html>
+

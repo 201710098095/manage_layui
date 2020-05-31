@@ -11,6 +11,8 @@ public class Dept {
 
     private String delFlag;
 
+    private Integer parentId;
+
     public Integer getDeptId() {
         return deptId;
     }
@@ -49,5 +51,13 @@ public class Dept {
 
     public void setDelFlag(String delFlag) {
         this.delFlag = delFlag == null ? null : delFlag.trim();
+    }
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
 }

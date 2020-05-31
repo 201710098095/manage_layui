@@ -27,6 +27,6 @@ public interface MyUserInfoMapper {
 
     MyUserInfo selectUserByUsername(String username);
     List<MyUserInfo> selectAllUser();
-
+    List<String> findPermissionListByUserId(Integer userId);
 
 }

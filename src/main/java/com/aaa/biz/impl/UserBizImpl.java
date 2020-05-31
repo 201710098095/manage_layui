@@ -27,6 +27,12 @@ public class UserBizImpl  implements UserBiz {
     }
 
     @Override
+    public List<String> findPermissionListByUserId(Integer userId) {
+        return myUserInfoMapper.findPermissionListByUserId(userId);
+    }
+
+
+    @Override
     public MyUserInfo selectUserByUsername(String username) {
         return myUserInfoMapper.selectUserByUsername(username);
     }

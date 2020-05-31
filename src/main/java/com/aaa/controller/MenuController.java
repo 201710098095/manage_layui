@@ -38,8 +38,12 @@ public class MenuController {
         List<LayUiTree> layUiTrees = menuBiz.selectAllMenu();
         return layUiTrees;
     }
+//    @RequestMapping("/toShowMenuTree")
+//    public String toShowMenuTree() {
+//        return "menu/showMenuTree2";
+//    }
 
-    //table
+    //获取菜单
     @RequestMapping("/selectAllMenu2")
     @ResponseBody
     public LayUITable selectAllMenu2(){

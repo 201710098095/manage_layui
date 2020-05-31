@@ -1,5 +1,6 @@
 package com.aaa.shiro;
 
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +28,15 @@ public class ShiroConfig {
     /**
      * securityManager
      */
+
+    /**
+     * 设置shiro的方言
+     * @return
+     */
+    @Bean
+    public ShiroDialect shiroDialect(){
+        return new ShiroDialect();
+    }
     @Bean
     public DefaultWebSecurityManager defaultWebSecurityManager(){
         DefaultWebSecurityManager defaultWebSecurityManager= new DefaultWebSecurityManager();
@@ -54,6 +64,7 @@ public class ShiroConfig {
         map.put("/login","anon");
 //过滤所有的请求
         map.put("/*","authc");
+//        map.put("/menu/toShowMenuTree","perms[menu:edit]");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
 //修改登录页面
         shiroFilterFactoryBean.setLoginUrl("/toLogin");

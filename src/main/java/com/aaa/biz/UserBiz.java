@@ -16,6 +16,8 @@ public interface UserBiz {
     MyUserInfo selectUserByUsername(String username);
     int insertSelective(MyUserInfo record);
     int delUserByID(List<String> ids);
+    List<String> findPermissionListByUserId( Integer userId);
+
     int updateByPrimaryKeySelective(MyUserInfo record);
 
 }

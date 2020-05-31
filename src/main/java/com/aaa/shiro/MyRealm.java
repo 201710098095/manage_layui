@@ -3,12 +3,16 @@ package com.aaa.shiro;
 import com.aaa.biz.UserBiz;
 import com.aaa.biz.impl.UserBizImpl;
 import com.aaa.entity.MyUserInfo;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -28,7 +32,27 @@ public class MyRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         System.out.println("授权开始了！");
-        return null;
+        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        //获取用户信息
+        MyUserInfo myUserInfo = (MyUserInfo) SecurityUtils.getSubject().getPrincipal();
+        //用户id
+        int userid = myUserInfo.getUserid();
+
+        System.out.println(userid);
+        //获取用户信息,前提是在认证的时候将用户信息放入到Principal中
+        List<String> perms = userBizImpl.findPermissionListByUserId(userid);
+        System.out.println(perms);
+
+        for(int i = 0;i < perms.size(); i ++){
+            System.out.println(perms.get(i));
+            simpleAuthorizationInfo.addStringPermission(perms.get(i));
+//            simpleAuthorizationInfo.setRoles();
+        }
+
+//        List<String> permissions = new ArrayList<String>();
+////        String perms="menu:edit";
+        return simpleAuthorizationInfo;
+
     }
 
     /**

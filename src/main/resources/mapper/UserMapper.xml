@@ -22,6 +22,19 @@
   <select id="selectUserByUsername" resultType="com.aaa.entity.MyUserInfo">
         select * from tbl_user where login_name=#{login_name}
     </select>
+  <select id="findPermissionListByUserId" parameterType="java.lang.Integer" resultType="java.lang.String">
+      SELECT
+        tbl_menu.perms
+       FROM
+         tbl_role,tbl_menu,tbl_role_menu
+         WHERE tbl_role.role_id=tbl_role_menu.roleid
+         AND tbl_menu.menu_id=tbl_role_menu.menuid
+      AND tbl_role_menu.roleid=(SELECT
+       tbl_role.role_id
+      FROM
+        tbl_user,tbl_role,tbl_user_role
+      WHERE tbl_user.user_id=tbl_user_role.userid AND tbl_role.role_id =tbl_user_role.roleid AND tbl_user.user_id=#{user_id})
+    </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tbl_user
     where user_id = #{user_id,jdbcType=INTEGER}

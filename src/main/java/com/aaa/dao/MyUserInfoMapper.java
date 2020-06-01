@@ -23,7 +23,7 @@ public interface MyUserInfoMapper {
 
     int updateByPrimaryKey(MyUserInfo record);
 
-    int delUserByID( @Param("ids") List<String> ids);
+    int delUserByID(@Param("ids") List<String> ids);
 
     MyUserInfo selectUserByUsername(String username);
     List<MyUserInfo> selectAllUser();

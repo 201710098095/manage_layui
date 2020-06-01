@@ -1,9 +1,7 @@
 package com.aaa.biz;
 
-import com.aaa.entity.LayUITable;
 import com.aaa.entity.LayUiTree;
 import com.aaa.entity.Menu;
-import com.aaa.entity.MyUserInfo;
 
 import java.util.List;
 

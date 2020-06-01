@@ -1,9 +1,9 @@
 package com.aaa.controller;
 
-import com.aaa.biz.MenuBiz;
+import com.aaa.biz.DeptBiz;
+import com.aaa.entity.Dept;
 import com.aaa.entity.LayUITable;
-import com.aaa.entity.LayUiTree;
-import com.aaa.entity.Menu;
+
 import com.aaa.util.MyConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,49 +15,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @Author: 陈建
- * @Date: 2020/5/28 0028 6:59
- * @Version 1.0
- */
 @Controller
-@RequestMapping("/menu")
-public class MenuController {
+@RequestMapping("/dept")
+public class DeptController {
     @Autowired
-    private MenuBiz menuBiz;
-    @RequestMapping("/toShowMenu")
-    public String toShowMenu() {
-        return "menu/showMenu";
+    private DeptBiz deptBiz;
+    @RequestMapping("/toShowDept")
+    public String toShowUserLayui(){
+        return "dept/dept";
     }
-    //tree
-    @RequestMapping("/selectAllMenu")
-    @ResponseBody
-    public List<LayUiTree> selectAllMenu(){
-        List<LayUiTree> layUiTrees = menuBiz.selectAllMenu();
-        return layUiTrees;
-    }
-//    @RequestMapping("/toShowMenuTree")
-//    public String toShowMenuTree() {
-//        return "menu/showMenuTree2";
-//    }
 
-    //获取菜单
-    @RequestMapping("/selectAllMenu2")
+    @RequestMapping("/showAllDept")
     @ResponseBody
-    public LayUITable selectAllMenu2(){
-        List<Menu> menus = menuBiz.selectAllMenu2();
+    public LayUITable selectAllDept(){
+        List<Dept> depts = deptBiz.selectAllDept();
         LayUITable layUITable = new LayUITable();
         layUITable.setCode(0);
         layUITable.setMsg("返回消息");
-        layUITable.setCount(19);
-        layUITable.setData(menus);
+        layUITable.setData(depts);
         return layUITable;
     }
-    //添加菜单
-    @RequestMapping("/saveMenu")
+    @RequestMapping("/insertDept")
     @ResponseBody
-    public Object saveUser(Menu menu){
-        int i = menuBiz.insertSelective(menu);
+    public Object insertDept(Dept dept){
+
+        int i = deptBiz.insertSelective(dept);
         Map map = new HashMap<>();
         if(i>0){
             map.put("code", MyConstants.successCode);
@@ -68,15 +50,10 @@ public class MenuController {
         }
         return map;
     }
-    /**
-     * 修改菜单信息
-     * @param menu
-     * @return
-     */
-    @RequestMapping("/editMenu")
+    @RequestMapping("/updateDept")
     @ResponseBody
-    public Object editUser(Menu menu){
-        int i = menuBiz.updateByPrimaryKeySelective(menu);
+    public Object updateDept(Dept dept){
+        int i = deptBiz.updateByPrimaryKeySelective(dept);
         Map map= new HashMap<>();
         if(i>0){
             map.put("code",MyConstants.successCode);
@@ -87,15 +64,13 @@ public class MenuController {
         }
         return map;
     }
-    /**
-     * 删除菜单信息
-     * @param menuId
-     * @return
-     */
-    @RequestMapping("/delMenu")
+    @RequestMapping("/delDept")
     @ResponseBody
-    public Object delMenu( @RequestParam(value = "menuId") Integer  menuId){
-        int i = menuBiz.deleteByPrimaryKey(menuId);
+    public Object delMenu( @RequestParam(value = "deptId") Integer  deptId){
+        System.out.println(deptId);
+        int i = deptBiz.deleteByPrimaryKey(deptId);
+        System.out.println(i);
+        System.out.println("-----------------------");
         Map map= new HashMap<>();
         if(i>0){
             map.put("code", MyConstants.successCode);
@@ -108,3 +83,4 @@ public class MenuController {
     }
 
 }
+

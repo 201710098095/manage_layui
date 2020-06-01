@@ -73,6 +73,11 @@
                         <i class="layui-icon">&#x1006;</i>清除搜索
                     </button>
                 </div>
+                <script type="text/html" id="mytoolbar">
+                    <span shiro:hasPermission="menu:add">
+                        <button type="button" class="layui-btn layui-btn-sm" lay-event="add"><i class="layui-icon layui-icon-addition"></i>添加菜单</button>
+                    </span>
+                </script>
                 <div class="demo-side">
                     <table id="demoTreeTb"></table>
                 </div>
@@ -221,7 +226,7 @@
                     var insTb = treeTable.render({
                         elem: '#demoTreeTb',
                         url: '/menu/selectAllMenu2',
-                        toolbar: 'default',
+                        toolbar: '#mytoolbar',
                         height: 'full-100',
                         tree: {
                             iconIndex: 2,
